@@ -7,23 +7,55 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+
+class Character(Base):
+    __tablename__ = "character"
+    character_id = Column(Integer, primary_key=True)
+    gender = Column(String(40))
+    name = Column(String(40), unique=True, nullable=False)
+    film_id = Column(Integer, nullable=False)
+    homeworld_id = Column(Integer, nullable=False)
+    vehicle_id = Column(Integer, nullable=False)
+
+class Planet(Base):
+    __tablename__ = "planet"
+    planet_id = Column(Integer, primary_key=True)
+    climate = Column(String(200))
+    gravity = Column(String(200))
+    name = Column(String(40), nullable=False)
+    resident_id = Column(Integer,ForeignKey('character.character_id') ,nullable=False)
+    character= relationship(Character)
+    film_id = Column(Integer,nullable=False)
+
+
+
+class User(Base):
+    __tablename__ = "user"
+    user_id = Column(Integer, primary_key=True)
+    user_name = Column (String(40), unique=True, nullable=False)
+    user_password = Column (String(40), nullable=False)
+    email = Column (String (49), unique=True, nullable=False)
+
+class Fav_type(Base):
+    __tablename__="fav_type"  
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    fav_type = Column(String(40), unique=True, nullable=False)
+
+
+class Film(Base):
+    __tablename__ = "film"
+    film_id = Column(Integer, primary_key=True)
+    character_id = Column(Integer,ForeignKey('character.character_id') ,nullable=False)
+    character = relationship(Character)
+    planet_id = Column(Integer, ForeignKey('planet.planet_id') ,nullable=False)
+    planet = relationship(Planet)
+    director = Column(String(40), nullable=False)
+    producer = Column(String(40), nullable=False)
+    title = Column(String(200), nullable=False)
+
+    
+    
 
     def to_dict(self):
         return {}
