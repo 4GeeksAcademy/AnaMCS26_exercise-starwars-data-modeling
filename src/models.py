@@ -37,11 +37,26 @@ class User(Base):
     user_password = Column (String(40), nullable=False)
     email = Column (String (49), unique=True, nullable=False)
 
-class Fav_type(Base):
-    __tablename__="fav_type"  
+class FavoritePlanets(Base):
+    __tablename__ = 'fav_planet'
     id = Column(Integer, primary_key=True)
-    fav_type = Column(String(40), unique=True, nullable=False)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    user = relationship(User)
 
+class FavoriteCharacters(Base):
+    __tablename__ = 'fav_character'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.user.id'))
+    character_id = Column(Integer, ForeignKey('character.character.id'))
+    user = relationship(User)
+
+class FavoriteFilm(Base):
+    __tablename__ = 'fav_character'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.user.id'))
+    film_id = Column(Integer, ForeignKey('film.film.id'))
+    user = relationship(User)
 
 class Film(Base):
     __tablename__ = "film"
